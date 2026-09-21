@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>专项突破练习卷</title>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$']] }, svg: { fontCache: 'global' } };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Noto Sans CJK SC", "WenQuanYi Micro Hei", sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; color: #1a1a1a; }
+  img { break-inside: avoid; page-break-inside: avoid; }
+
+  :root{
+    --ink:#1a1a1a;
+    --line:#222;
+    --seal:#111;
+  }
+
+  .report-page{
+    position: relative;
+    width: 210mm; height: 297mm;
+    padding: 14mm 14mm 12mm 22mm;
+    overflow: hidden;
+    break-after: page; page-break-after: always;
+    break-inside: avoid; page-break-inside: avoid;
+    background: #fff;
+  }
+  .report-page:last-child{ break-after: auto; page-break-after: auto; }
+
+  /* ===== 竖排密封线 ===== */
+  .seal-wrap{
+    position:absolute; left:5mm; top:0; height:100%;
+    width:14mm; display:flex; align-items:center; justify-content:center;
+  }
+  .seal{
+    writing-mode: vertical-rl; text-orientation: mixed;
+    letter-spacing: 6px; font-size: 11px; color: var(--seal);
+    border-left:1px solid var(--seal); border-right:1px solid var(--seal);
+    padding: 10mm 3mm; height: 86%; display:flex; align-items:center;
+  }
+  .seal .fields{ writing-mode: horizontal-tb; display:block; margin-top:14mm; letter-spacing:1px; line-height:2.2; font-size:10px; }
+
+  /* ===== 卷头 ===== */
+  .paper-head{ text-align:center; }
+  .paper-head .tag{ display:inline-block; border:1.5px solid var(--ink); padding:1px 10px; font-size:11px; letter-spacing:2px; margin-bottom:5px; }
+  .paper-head h1{ font-size:21px; margin:4px 0 2px; letter-spacing:1px; }
+  .paper-head .sub{ font-size:11px; color:#333; letter-spacing:1px; }
+
+  .meta-row{ display:flex; justify-content:space-between; font-size:10.5px; margin:8px 0 4px; color:#333; }
+
+  /* ===== 得分总表 ===== */
+  .score-table{ width:100%; border-collapse:collapse; font-size:11px; margin:4px 0 8px; }
+  .score-table th, .score-table td{ border:1px solid var(--line); text-align:center; padding:4px 2px; }
+  .score-table th{ background:#e9e9e9; font-weight:600; }
+  .score-table .big{ font-size:13px; letter-spacing:1px; }
+
+  .rule{ height:1px; background:var(--line); margin:6px 0; }
+
+  /* ===== 大题头 ===== */
+  .section-head{ display:flex; justify-content:space-between; align-items:flex-end; margin:9px 0 4px; }
+  .section-head .title{ font-size:13.5px; font-weight:700; letter-spacing:.5px; }
+  .section-head .title .num{ margin-right:6px; }
+  .section-head .title .pts{ font-weight:400; font-size:11px; color:#333; }
+  .section-head .label{ font-size:10px; color:#444; border:1px solid #888; padding:1px 6px; border-radius:2px; }
+
+  .q{ font-size:11.5px; line-height:1.75; margin:7px 0; break-inside:avoid; }
+  .q .qno{ font-weight:700; margin-right:4px; }
+  .options{ margin:3px 0 0 1.4em; font-size:11.5px; line-height:1.85; }
+  .options .opt{ display:inline-block; width:49%; }
+
+  .work-area{ border:1px dashed #bbb; min-height:34px; margin:4px 0 2px; }
+
+  .page-foot{ position:absolute; bottom:6mm; left:22mm; right:14mm; display:flex; justify-content:space-between; font-size:9.5px; color:#555; }
+
+  /* ===== 答案页 ===== */
+  .ans-title{ text-align:center; font-size:15px; font-weight:700; letter-spacing:2px; margin:0 0 8px; padding-bottom:5px; border-bottom:2px solid var(--ink); }
+  .ans-block{ break-inside:avoid; margin:5px 0 8px; }
+  .ans-block .an{ font-weight:700; font-size:12px; }
+  .ans-block .body{ font-size:11px; line-height:1.7; margin-top:2px; }
+</style>
+</head>
+<body>
+
+<!-- ============ 第 1 页：卷头 + 一、二大题 ============ -->
+<div class="report-page">
+  <div class="seal-wrap"><div class="seal">…………………………装………………………订………………………线………………………<span class="fields">姓名__________ 班级__________ 考号__________</span></div></div>
+
+  <div class="paper-head">
+    <span class="tag">专 项 突 破</span>
+    <h1 id="paper-title">专项突破练习卷</h1>
+    <div class="sub" id="paper-sub">薄弱点针对性训练 · 满分 100 分 · 考试时间 60 分钟</div>
+  </div>
+
+  <div class="meta-row">
+    <span>学科：<span id="meta-subject">物理</span></span>
+    <span>范围：<span id="meta-scope">电场力的性质</span></span>
+    <span>命题：针对性组卷</span>
+  </div>
+
+  <table class="score-table">
+    <tr><th>题号</th><th>一</th><th>二</th><th>三</th><th>四</th><th>总分</th></tr>
+    <tr><td class="big">得分</td><td></td><td></td><td></td><td></td><td></td></tr>
+  </table>
+
+  <div class="section-head">
+    <div class="title"><span class="num">一、单项选择题</span><span class="pts">（本题共 5 小题，每小题 5 分，共 25 分。每小题只有一个选项符合题意）</span></div>
+  </div>
+
+  <div id="sec1"></div>
+
+  <div class="section-head">
+    <div class="title"><span class="num">二、多项选择题</span><span class="pts">（本题共 3 小题，每小题 5 分，共 15 分。每小题有多个选项符合题意）</span></div>
+  </div>
+
+  <div id="sec2"></div>
+
+  <div class="page-foot"><span id="foot-topic">电场力的性质 · 专项突破</span><span>第 1 页（共 4 页）</span></div>
+</div>
+
+<!-- ============ 第 2 页：三、四大题（题目） ============ -->
+<div class="report-page">
+  <div class="seal-wrap"><div class="seal">…………………………装………………………订………………………线………………………</div></div>
+
+  <div class="section-head">
+    <div class="title"><span class="num">三、填空题</span><span class="pts">（本题共 4 小题，每小题 5 分，共 20 分）</span></div>
+  </div>
+
+  <div id="sec3"></div>
+
+  <div class="section-head">
+    <div class="title"><span class="num">四、解答题</span><span class="pts">（本题共 4 小题，每小题 10 分，共 40 分。解答应写出必要的文字说明、方程式和重要的演算步骤）</span></div>
+  </div>
+
+  <div id="sec4"></div>
+
+  <div class="page-foot"><span id="foot-topic2">电场力的性质 · 专项突破</span><span>第 2 页（共 4 页）</span></div>
+</div>
+
+<!-- ============ 第 3 页：解答题续 + 答题空间 ============ -->
+<div class="report-page">
+  <div class="seal-wrap"><div class="seal">…………………………装………………………订………………………线………………………</div></div>
+
+  <div class="section-head">
+    <div class="title"><span class="num">四、解答题（续）</span></div>
+  </div>
+
+  <div id="sec4-extra"></div>
+
+  <div class="q"><div class="qno">解答书写区</div></div>
+  <div class="work-area" style="min-height:150px;"></div>
+  <div class="work-area" style="min-height:150px;"></div>
+
+  <div class="page-foot"><span id="foot-topic3">电场力的性质 · 专项突破</span><span>第 3 页（共 4 页）</span></div>
+</div>
+
+<!-- ============ 第 4 页：答案解析 ============ -->
+<div class="report-page">
+  <div class="seal-wrap"><div class="seal">…………………………装………………………订………………………线………………………</div></div>
+
+  <div class="ans-title">参 考 答 案 与 解 析</div>
+
+  <div id="answers"></div>
+
+  <div class="page-foot"><span>专项突破练习卷 · 答案解析</span><span>第 4 页（共 4 页）</span></div>
+</div>
+
+<script>
+/* =========================================================
+   数据区：调用方只需替换以下 DATA 即可组卷。
+   sections: [{type:'choice'|'multi'|'fill'|'solve', label:'场强叠加', items:[...]}]
+   answers:  与 sections 顺序对应的解析
+   ========================================================= */
+const DATA = {
+  title: "静电场（电场力的性质）专项突破练习卷",
+  sub: "薄弱点针对性训练 · 满分 100 分 · 考试时间 60 分钟",
+  subject: "物理",
+  scope: "电场力的性质",
+  foot: "电场力的性质 · 专项突破",
+  sections: [
+    {
+      type: "choice", label: "场强叠加",
+      items: [
+        { q: "在半径为 R、带电量为 −Q 的均匀带电圆环上，切去极小一段 MN（含电荷），切去部分长为 L，则剩下部分在圆心 O 处产生的场强为（　　）",
+          opts: ["大小为 $E=\\dfrac{kLQ}{R^3}$，方向指向 MN 中点",
+                 "大小为 $E=\\dfrac{kLQ}{\\pi R^3}$，方向指向 MN 中点",
+                 "大小为 $E=\\dfrac{kLQ}{\\pi R^2}$，方向背离 MN 中点",
+                 "大小为 $E=\\dfrac{kLQ}{2\\pi R^3}$，方向背离 MN 中点"] },
+        { q: "在 x=0 和 x=5 cm 处分别放置电荷量为 $Q_A$、$Q_B$ 的两点电荷，在 x=9 cm 处的 C 点测得电场强度为零，不考虑其他电场影响。则下列说法正确的是（　　）",
+          opts: ["$Q_A$ 与 $Q_B$ 一定是异种电荷",
+                 "$|Q_A|:|Q_B|=81:16$",
+                 "x 轴上 x=3 cm 与 x=7 cm 处电场强度大小相等、方向相同",
+                 "x 轴上 x=3 cm 与 x=10 cm 处电场强度方向一定相同"] },
+        { q: "正方形 ABCD 的三个顶点 A、B、C 放置三个点电荷，a、O、c 三点将正方形的一条对角线四等分，其中 O 点电场强度大小为 E、方向指向 B 点，c 点电场强度等于零。则 a 点电场强度大小为（　　）",
+          opts: ["2E", "$\\dfrac{32}{9}E$", "4E", "$\\dfrac{9}{4}E$"] },
+        { q: "一电荷量为 +q、质量为 m 的小球恰能静止在均匀带电圆环（带电量 +Q）圆心 O 点上方的 P 点，OP=L，P 与圆环上任一点的连线与 PO 的夹角均为 θ。关于该系统的说法正确的是（　　）",
+          opts: ["圆环在 P 点产生的场强方向竖直向上",
+                 "圆环在 P 点产生的场强大小为 $\\dfrac{mg}{q}$",
+                 "P 点电势高于 O 点电势",
+                 "小球在 P 点受合力为零，故此处场强必为零"] },
+        { q: "直角坐标系 xOy 中，M、N 两点位于 x 轴上并固定负点电荷，一电荷量为 Q 的正点电荷置于 O 点时 G 点电场强度恰好为零。若将该正点电荷移到 G 点，则 H 点处场强的大小和方向为（　　）",
+          opts: ["$\\dfrac{3kQ}{4a^2}$，沿 y 轴正方向",
+                 "$\\dfrac{5kQ}{4a^2}$，沿 y 轴负方向",
+                 "$\\dfrac{kQ}{a^2}$，沿 y 轴正方向",
+                 "$\\dfrac{5kQ}{4a^2}$，沿 y 轴正方向"] }
+      ]
+    },
+    {
+      type: "multi", label: "电场线概念",
+      items: [
+        { q: "图为某电场中的一条电场线，a、b 为该电场线上的两点。下列说法正确的是（　　）",
+          opts: ["a 点的场强一定比 b 点的场强大",
+                 "b 点的场强可能比 a 点的场强小",
+                 "负电荷在 a 点受到的电场力方向沿电场线向左",
+                 "正电荷运动中通过 b 点时，其运动方向一定沿 ba 方向"] },
+        { q: "图中画了四个电场的电场线，其中 A、C 中的小圆圈表示一个点电荷，A 中虚线是一个圆，B 中几条直线间距相等且互相平行。则 M、N 两处电场强度相同的是（　　）",
+          opts: ["图 A 中 M、N 两处",
+                 "图 B 中 M、N 两处",
+                 "图 C 中 M、N 两处",
+                 "图 D 中 M、N 两处"] },
+        { q: "在电场中 a、b、c、d 四个点分别引入试探电荷，电荷所受电场力 F 与电荷量 q 的关系如图所示。下列说法正确的是（　　）",
+          opts: ["四条直线对应的电场强度各不相同",
+                 "a、b、c、d 四点的电场强度大小关系为 $E_d>E_c>E_a>E_b$",
+                 "同一点的电场强度随试探电荷电荷量的增加而增大",
+                 "图中直线斜率的绝对值表示对应点的电场强度大小"] }
+      ]
+    },
+    {
+      type: "fill", label: "库仑力与动力学",
+      items: [
+        { q: "在竖直放置、半径为 R 的光滑半圆弧绝缘细管圆心 O 处固定一正点电荷，质量为 m、电荷量为 −q 的小球从圆弧管水平直径端点 A 由静止释放，滑到最低点 B 时对管壁恰好无压力。则小球到达 B 点时的速率为 ____________。（重力加速度为 g）" },
+        { q: "上题中若 O 处点电荷电量变为原来的两倍、其他条件不变，则小球滑到 B 点时对管壁压力的大小为 ____________，方向 ____________。" },
+        { q: "竖直平面内有半径为 R 的半圆形光滑绝缘轨道 ABC，A、C 为最高点、B 为最低点，圆心处固定电荷量为 +q 的点电荷，将质量 m、电荷量 +q₁ 的小球从 A 处无初速度释放。则小球运动到 B 点时对轨道的压力大小为 ____________。" },
+        { q: "带电小球 A 固定在半圆形凹槽最低点，小球 B 在库仑力作用下于凹槽左端点保持静止；B 的电荷量缓慢减少、沿弧面向下移动，凹槽始终保持静止。此过程中地面对凹槽的摩擦力变化情况是 ____________（填“增大”“减小”或“不变”）。" }
+      ]
+    },
+    {
+      type: "solve", label: "场强叠加与平衡",
+      items: [
+        { q: "如图所示，电荷量 $Q_A=3\\times10^{-8}\\,\\mathrm{C}$、$Q_B=-3\\times10^{-8}\\,\\mathrm{C}$ 的两带电小球相距 5 cm，在水平方向匀强电场作用下两球保持静止、悬线竖直。求 A、B 连线中点处的场强。（两球可视为质点）" },
+        { q: "在光滑绝缘水平面上，三个带电小球 a、b、c 位于边长为 l 的正三角形三个顶点上，a、b 带正电、电荷量均为 q，c 带负电。整个系统置于方向水平的匀强电场中，三个小球均处于静止状态。求匀强电场场强的大小。（静电力常量为 k）" },
+        { q: "两个点电荷质量分别为 $m_1$、$m_2$，带异种电荷、电荷量分别为 $Q_1$、$Q_2$，相距 d，只在库仑力作用下各自绕连线上某一固定点在同一水平面内做匀速圆周运动。求它们的总动能。" },
+        { q: "两个点电荷 $Q_1$、$Q_2$ 的电荷量分别为 +1 C 和 +4 C，在水平面上能自由移动，相距 d=3 m。现引入点电荷 $Q_3$，求使整个系统处于平衡时 $Q_3$ 的电荷量及位置。" }
+      ]
+    }
+  ],
+  answers: [
+    { an: "一、1—5", body: "<b>1. B</b>　完整圆环在圆心场强为零，切去部分在 O 点的场强为 $E_0=\\dfrac{k\\cdot\\dfrac{L}{2\\pi R}Q}{R^2}=\\dfrac{kLQ}{2\\pi R^3}$，剩余部分与之等大反向，故 $E=\\dfrac{kLQ}{2\\pi R^3}$，方向指向 MN 中点。<br><b>2. B</b>　C 点场强为零说明 $Q_A$、$Q_B$ 同号且 $E_A=E_B$：$\\dfrac{k|Q_A|}{9^2}=\\dfrac{k|Q_B|}{4^2}$，得 $|Q_A|:|Q_B|=81:16$。<br><b>3. B</b>　由 c 点场强为零反推三个点电荷的电荷量关系，再对 a 点叠加，结果为 $\\dfrac{32}{9}E$。<br><b>4. B</b>　小球静止说明圆环在 P 点产生的场强与重力平衡，$E=\\dfrac{mg}{q}$，方向竖直向上。<br><b>5. B</b>　G 点场强为零给出 M、N 负电荷在 G 点的场强关系，正电荷移到 G 点后用矢量叠加得 H 点场强为 $\\dfrac{5kQ}{4a^2}$，方向沿 y 轴负方向。" },
+    { an: "二、6—8", body: "<b>6. BD</b>　一条电场线无法判断疏密，故 A 错、B 对；负电荷受力与场强方向相反，C 对（图中方向依图示）；正电荷在 b 点的运动方向不一定沿电场线，D 错。<br><b>7. B</b>　只有匀强电场（图 B）中 M、N 两处场强大小、方向均相同。<br><b>8. AD</b>　斜率绝对值即场强大小，四点场强各不相同，故 A 对、B 错，D 对；场强由电场本身决定，与试探电荷无关，C 错。" },
+    { an: "三、9—12", body: "<b>9.</b> $\\sqrt{gR}$　由动能定理 $mgR=\\dfrac12mv^2$ 得 $v=\\sqrt{2gR}$ 与电场力不做功共同验证；对管壁无压力说明 $mg=\\dfrac{mv^2}{R}$ 与库仑力方向一致，解得 $v=\\sqrt{gR}$。<br><b>10.</b> 大小 $2mg$、方向指向圆心 O　点电荷加倍后库仑力加倍，由向心力方程 $N+2F_{库}=mv^2/R$ 得 $N=2mg$，方向指向 O。<br><b>11.</b> $mg+\\dfrac{kqq_1}{R^2}$　由 A 到 B 机械能守恒得 $v_B=\\sqrt{2gR}$，再由 $N-mg-\\dfrac{kqq_1}{R^2}=\\dfrac{mv_B^2}{R}$ 解得。<br><b>12.</b> 减小　随 B 电量减小，库仑力减小，凹槽对 B 的支持力方向随之变化，地面对凹槽的静摩擦力随之减小。" },
+    { an: "四、13—16", body: "<b>13.</b> 悬线竖直说明小球所受合力竖直向下，匀强电场在水平方向的分量被库仑力平衡。设中点场强为 $E_{中}=E_{匀}+E_A+E_B$，叠加后求得方向沿 AB 连线，大小由 $Q_A$、$Q_B$ 及距离关系代入 $E=kQ/r^2$ 计算。<br><b>14.</b> c 球受匀强电场力与 a、b 对它的库仑力平衡：$q_cE=2\\cdot\\dfrac{kq^2}{l^2}\\cos30^\\circ$，代入 $q_c$ 电荷量得 $E=\\dfrac{\\sqrt3kq^2}{l^2}$（方向沿 ac 边水平分量）。<br><b>15.</b> 两者角速度相同、库仑力提供向心力：$m_1r_1\\omega^2=m_2r_2\\omega^2=k\\dfrac{Q_1Q_2}{d^2}$，且 $r_1+r_2=d$。总动能 $E_k=\\dfrac12m_1v_1^2+\\dfrac12m_2v_2^2=\\dfrac12\\dfrac{kQ_1Q_2}{d}\\cdot\\dfrac{m_1+m_2}{m_1+m_2}=\\dfrac{kQ_1Q_2}{2d}$。<br><b>16.</b> 三电荷平衡规律：$Q_3$ 必与 $Q_1$、$Q_2$ 异号（负电），且位于两者之间。设距 $Q_1$ 为 x，由 $\\dfrac{k\\cdot1\\cdot|Q_3|}{x^2}=\\dfrac{k\\cdot1\\cdot4}{3^2}$ 且 $\\dfrac{k\\cdot4\\cdot|Q_3|}{(3-x)^2}=\\dfrac{k\\cdot1\\cdot4}{3^2}$，解得 x=1 m，$|Q_3|=\\dfrac49\\,\\mathrm{C}$。" }
+  ]
+};
+
+/* ============ 渲染 ============ */
+const ABC = ["A","B","C","D","E","F"];
+function esc(s){ return s; } /* MathJax 处理 $...$，此处不转义 */
+
+function renderSection(host, items, startNo, withAns){
+  let html = "";
+  items.forEach((it, i)=>{
+    const no = startNo + i;
+    html += `<div class="q"><span class="qno">${no}.</span>${it.q}`;
+    if(it.opts){
+      html += `<div class="options">`;
+      it.opts.forEach((o, j)=>{
+        html += `<span class="opt">${ABC[j]}. ${o}</span>`;
+      });
+      html += `</div>`;
+    }
+    html += `</div>`;
+    if(withAns) html += `<div class="work-area"></div>`;
+  });
+  host.innerHTML = html;
+  return startNo + items.length;
+}
+
+(function(){
+  document.getElementById("paper-title").textContent = DATA.title;
+  document.getElementById("paper-sub").textContent = DATA.sub;
+  document.getElementById("meta-subject").textContent = DATA.subject;
+  document.getElementById("meta-scope").textContent = DATA.scope;
+  document.getElementById("foot-topic").textContent = DATA.foot;
+  document.getElementById("foot-topic2").textContent = DATA.foot;
+  document.getElementById("foot-topic3").textContent = DATA.foot;
+
+  let no = 1;
+  DATA.sections.forEach((sec, si)=>{
+    const host = document.getElementById("sec"+(si+1));
+    if(si < 2){
+      /* 给大题头加上薄弱点标签 */
+      const heads = document.querySelectorAll(".section-head");
+      const extra = document.createElement("span");
+      extra.className = "label";
+      extra.textContent = sec.label;
+      heads[si].querySelector(".title").appendChild(extra);
+    }
+    no = renderSection(host, sec.items, no, false);
+  });
+
+  /* 答案页 */
+  let ans = "";
+  DATA.answers.forEach(a=>{
+    ans += `<div class="ans-block"><div class="an">${a.an}</div><div class="body">${a.body}</div></div>`;
+  });
+  document.getElementById("answers").innerHTML = ans;
+})();
+</script>
+</body>
+</html>
